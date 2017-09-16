@@ -68,13 +68,28 @@ def group_persons(persons):
         if dict.get(age) is None:
             dict[age] = []
         dict[age].append(p)
+    return dict
+
+def getK(dict):
+    tmpDict = {}
     for group in dict:
-        dict[group] = len(dict[group])
+        tmpDict[group] = len(dict[group])
     k = None
-    for group in dict:
-        if dict[group] < k or k is None:
-            k = dict[group]
+    for group in tmpDict:
+        if tmpDict[group] < k or k is None:
+            k = tmpDict[group]
     return k
+
+
+def printGroupedPersons(dict):
+    i = 0
+    for group in dict:
+        print "------"
+        print "Group: " + str(i)
+        print "------"
+        i = i + 1
+        for p in dict[group]:
+            print p
 
 
 def main():
@@ -96,9 +111,16 @@ def main():
                 for l in range(iSex):
                     persons = anonymize_sex(persons)
 
-                k = group_persons(persons)
+                dict = group_persons(persons)
+
+                k = getK(dict)
+
                 if k >= given_k:
                     satisfying_combinations.append(Combination(iAge,iZip,iSex,k))
+
+                    #print "----------------------------------------------------------------"
+                    #print "Age: " + str(iAge) + " Zip: " + str(iZip) + " Sex: " + str(iSex)
+                    #printGroupedPersons(dict)
 
     combinations_with_highest_k = get_combinations_with_least_steps(satisfying_combinations)
 
