@@ -52,28 +52,57 @@ def get_combinations_with_least_steps(satisfying_combinations):
     return [combination for combination in sorted_combinations if combination.k == highest_k]
 
 
+def copyPersons(fresh_persons):
+    persons = []
+    for p in fresh_persons:
+        persons.append(Person(p.name, p.age[0], p.sex, p.zipcode, p.illness))
+    return persons
+
+
+def groupPersons(persons):
+    dict = {}
+    for p in persons:
+        age = str(p.age[0]) + str(p.age[1]) + str(p.zipcode) + str(p.sex)
+        if dict.get(age) is None:
+            dict[age] = []
+        dict[age].append(p)
+    for group in dict:
+        dict[group] = len(dict[group])
+    k = None
+    for group in dict:
+        if dict[group] < k or k is None:
+            k = dict[group]
+    return k
+
+
 def main():
     given_k = 4
     satisfying_combinations = []
     fresh_persons = read_csv()
-    for iAge in range(7):
-        for iZip in range(5):
-            for iSex in range(1):
-                persons = fresh_persons
+    for iAge in range(8):
+        for iZip in range(6):
+            for iSex in range(2):
+                persons = copyPersons(fresh_persons)
                 for i in range(iAge):
-                    persons = anonymize_ZIP(persons)
-                for j in range(iZip):
                     persons = anonymize_age(persons)
+                for j in range(iZip):
+                    persons = anonymize_ZIP(persons)
                 for l in range(iSex):
                     persons = anonymize_sex(persons)
-                k = get_k(persons)
+
+                k = groupPersons(persons)
                 if k >= given_k:
-                    satisfying_combinations.append(Combination(iAge,iZip,iSex,k))
+                    print "Age: " + str(iAge) + " Zip: " + str(iZip) + " Sex: " + str(iSex)
+                    print k
 
-    combinations_with_highest_k = get_combinations_with_highest_k(satisfying_combinations)
+                    #k = get_k(persons)
+                #if k >= given_k:
+                #    satisfying_combinations.append(Combination(iAge,iZip,iSex,k))
 
-    for p in persons:
-        print p
+    #combinations_with_highest_k = get_combinations_with_highest_k(satisfying_combinations)
+
+               # for p in persons:
+               #     print p
 
 
 if __name__ == "__main__":
