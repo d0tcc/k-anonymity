@@ -1,5 +1,6 @@
 import csv
 from Person import Person
+from Combination import Combination
 
 
 def read_csv():
@@ -12,6 +13,11 @@ def read_csv():
         persons.append(Person(p[0], p[1], p[2], p[3], p[4]))
     return persons
 
+
+def anonymize_sex(persons):
+    for p in persons:
+        p.sex = '*'
+    return persons
 
 def anonymize_ZIP(persons):
     for p in persons:
@@ -39,11 +45,33 @@ def anonymize_age(persons):
     return persons
 
 
+def get_combinations_with_least_steps(satisfying_combinations):
+    # TODO
+    sorted_combinations = sorted(satisfying_combinations, key=lambda combination: combination.k, reverse=True)
+    highest_k = sorted_combinations[0].k
+    return [combination for combination in sorted_combinations if combination.k == highest_k]
+
+
 def main():
-    persons = read_csv()
-    persons = anonymize_ZIP(persons)
-    for i in range(3):
-        persons = anonymize_age(persons)
+    given_k = 4
+    satisfying_combinations = []
+    fresh_persons = read_csv()
+    for iAge in range(7):
+        for iZip in range(5):
+            for iSex in range(1):
+                persons = fresh_persons
+                for i in range(iAge):
+                    persons = anonymize_ZIP(persons)
+                for j in range(iZip):
+                    persons = anonymize_age(persons)
+                for l in range(iSex):
+                    persons = anonymize_sex(persons)
+                k = get_k(persons)
+                if k >= given_k:
+                    satisfying_combinations.append(Combination(iAge,iZip,iSex,k))
+
+    combinations_with_highest_k = get_combinations_with_highest_k(satisfying_combinations)
+
     for p in persons:
         print p
 
