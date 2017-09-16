@@ -1,12 +1,24 @@
 class Combination():
-    def __init__(self, iAge, iZip, iSex, k):
+    def __init__(self, iAge, iZip, iSex, k, grouped_persons):
         self.iAge = iAge
         self.iZip = iZip
         self.iSex = iSex
         self.k = k
+        self.grouped_persons = grouped_persons
 
     def __str__(self):
-        return "a: {0}, z: {1}, s: {2}, k: {3}".format(self.iAge, self.iZip, self.iSex, self.k)
+        txt = "----------------------------------------------------------------\n"
+        txt += "Age: {0}, ZIP: {1}, Sex: {2}, k: {3}\n".format(self.iAge, self.iZip, self.iSex, self.k)
+        i = 1
+        for group in self.grouped_persons:
+            txt += "--------\n"
+            txt += "Group: " + str(i) + "\n"
+            txt += "--------\n"
+            i = i + 1
+            for p in self.grouped_persons[group]:
+                txt += str(p) + "\n"
+            txt += "\n"
+        return txt + "\n"
 
 
     def get_steps(self):

@@ -9,8 +9,7 @@ def read_csv():
     with open('data.csv', 'rb') as f:
         reader = csv.reader(f)
         raw_persons = list(reader)
-    del raw_persons[0]
-    for p in raw_persons:
+    for p in raw_persons[1:]: # first line are the names
         persons.append(Person(p[0], p[1], p[2], p[3], p[4]))
     return persons
 
@@ -24,9 +23,6 @@ def anonymize_sex(persons):
 def anonymize_ZIP(persons):
     for p in persons:
         p.zipcode = p.zipcode[:-1]
-    # zipcode = p.zipcode
-    # index = zipcode.find('*')
-    # p.zipcode = zipcode.replace(index-1,'*')
     return persons
 
 
@@ -80,23 +76,29 @@ def getK(dict):
             k = tmpDict[group]
     return k
 
+def print_results(combinations_with_least_steps):
+    print "==============="
+    print "Anonymized Data"
+    print "===============\n"
+    for combination in combinations_with_least_steps:
+        print combination
 
-def printGroupedPersons(dict):
-    i = 0
-    for group in dict:
-        print "------"
-        print "Group: " + str(i)
-        print "------"
-        i = i + 1
-        for p in dict[group]:
-            print p
+
+def anonymize(persons, iAge, iZip, iSex):
+    for i in range(iAge):
+        persons = anonymize_age(persons)
+    for j in range(iZip):
+        persons = anonymize_ZIP(persons)
+    for l in range(iSex):
+        persons = anonymize_sex(persons)
+    return persons
 
 
 def main():
     try:
         given_k = int(sys.argv[1])
     except:
-        print "Usage-example: python anonymizer.py 4"
+        print "Please enter a valid value for k! Usage example: python anonymizer.py 4"
         exit()
     satisfying_combinations = []
     fresh_persons = read_csv()
@@ -104,28 +106,18 @@ def main():
         for iZip in range(6):
             for iSex in range(2):
                 persons = copy_persons(fresh_persons)
-                for i in range(iAge):
-                    persons = anonymize_age(persons)
-                for j in range(iZip):
-                    persons = anonymize_ZIP(persons)
-                for l in range(iSex):
-                    persons = anonymize_sex(persons)
+                persons = anonymize(persons, iAge, iZip, iSex)
 
-                dict = group_persons(persons)
+                grouped_persons = group_persons(persons)
 
-                k = getK(dict)
+                k = getK(grouped_persons)
 
                 if k >= given_k:
-                    satisfying_combinations.append(Combination(iAge,iZip,iSex,k))
+                    satisfying_combinations.append(Combination(iAge,iZip,iSex,k,grouped_persons))
 
-                    #print "----------------------------------------------------------------"
-                    #print "Age: " + str(iAge) + " Zip: " + str(iZip) + " Sex: " + str(iSex)
-                    #printGroupedPersons(dict)
+    combinations_with_least_steps = get_combinations_with_least_steps(satisfying_combinations)
 
-    combinations_with_highest_k = get_combinations_with_least_steps(satisfying_combinations)
-
-    for p in combinations_with_highest_k:
-        print p
+    print_results(combinations_with_least_steps)
 
 
 if __name__ == "__main__":
