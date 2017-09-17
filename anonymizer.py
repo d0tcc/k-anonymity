@@ -10,7 +10,7 @@ def read_csv():
         reader = csv.reader(f)
         raw_persons = list(reader)
     for p in raw_persons[1:]: # first line are the names
-        persons.append(Person(p[0], p[1], p[2], p[3], p[4]))
+        persons.append(Person('*', p[1], p[2], p[3], p[4]))
     return persons
 
 
@@ -93,6 +93,22 @@ def anonymize(persons, iAge, iZip, iSex):
         persons = anonymize_sex(persons)
     return persons
 
+def export_csv(combinations_with_least_steps):
+    print "Exporting CSV ..."
+    try:
+        combination = combinations_with_least_steps[0]
+        csv_list = [["Name","Alter","Geschlecht","PLZ","Krankheit","Gruppe"]]
+        for index, group in enumerate(combination.grouped_persons):
+            for p in combination.grouped_persons[group]:
+                csv_entry = str(p).split(', ')
+                csv_entry.append("Gruppe " + str(index+1))
+                csv_list.append(csv_entry)
+        with open("anonymized.csv", 'wb') as myfile:
+            wr = csv.writer(myfile, delimiter=",")
+            wr.writerows(csv_list)
+        print "Successfully exported CSV!"
+    except Exception as e:
+        print "Error while exporting CSV: " + str(e)
 
 def main():
     try:
@@ -118,7 +134,7 @@ def main():
     combinations_with_least_steps = get_combinations_with_least_steps(satisfying_combinations)
 
     print_results(combinations_with_least_steps)
-
+    export_csv(combinations_with_least_steps)
 
 if __name__ == "__main__":
     main()
