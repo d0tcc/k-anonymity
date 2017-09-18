@@ -6,6 +6,9 @@ class Person():
         self.zipcode = zipcode
         self.illness = illness
 
+    def __repr__(self):
+        return "{0}, {1}, {2}, {3}, {4}\n".format(self.name, self.print_age(), self.print_sex(), self.print_zipcode(), self.illness)
+
     def __str__(self):
         return "{0}, {1}, {2}, {3}, {4}".format(self.name, self.print_age(), self.print_sex(), self.print_zipcode(), self.illness)
 
