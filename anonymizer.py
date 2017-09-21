@@ -2,7 +2,7 @@ import csv
 from Person import Person
 from Combination import Combination
 import sys
-import math
+
 
 def read_csv():
     persons = []
@@ -26,73 +26,65 @@ def anonymize_ZIP(persons):
     return persons
 
 
-def sort_persons(persons):
-    return sorted(persons, key=lambda person: person.age[0], reverse=False)
-
-def anonymize_age(persons):
+def anonymize_date(persons):
     for p in persons:
-        from_age = p.age[0]
-        to_age = p.age[1]
-        age_range = to_age - from_age + 1
-        modulo = from_age % (age_range*2)
-
-        if modulo < age_range:
-            new_from_age = from_age
-            new_to_age = to_age + age_range
+        old_dob = p.dob
+        if len(old_dob) == 8 and old_dob.isdigit():
+            day = int(old_dob[:-2])
+            if day in range (16):
+                new_dob = old_dob[:6] + '1H'
+            else:
+                new_dob = old_dob[:6] + '2H'
+        elif 'H' in old_dob and len(old_dob) == 8:
+            new_dob = old_dob[:6] + '**'
+        elif '**' in old_dob:
+            month = int(old_dob[4:6])
+            if month in range(4):
+                new_dob = old_dob[:4] + 'Q1'
+            elif month in range(4,7):
+                new_dob = old_dob[:4] + 'Q2'
+            elif month in range(7,10):
+                new_dob = old_dob[:4] + 'Q3'
+            elif month in range(10,13):
+                new_dob = old_dob[:4] + 'Q4'
+        elif 'Q' in old_dob:
+            if old_dob[-1] in ['1', '2']:
+                new_dob = old_dob[:4] + '1H'
+            if old_dob[-1] in ['3', '4']:
+                new_dob = old_dob[:4] + '2H'
+        elif 'H' in old_dob and len(old_dob) == 6:
+            new_dob = old_dob[:4]
+        elif '*' not in old_dob and len(old_dob) == 4:
+            new_dob = old_dob[:3] + '*'
         else:
-            new_from_age = from_age - age_range
-            new_to_age = to_age
+            new_dob = old_dob
 
-        p.age = (new_from_age, new_to_age)
+        p.dob = new_dob
     return persons
-
-def anonymize_age_advanced(persons, round):
-    sorted_age_persons = sort_persons(persons)
-    anonymized_persons = []
-    sector_size = int(math.pow(2,round))
-    for i in range(int(len(sorted_age_persons)/(2*(round+1)))):
-        sector_one = sorted_age_persons[:sector_size]
-        sector_two = sorted_age_persons[sector_size:sector_size*2]
-        sorted_age_persons = sorted_age_persons[sector_size*2:]
-
-        if len(sorted_age_persons) == 1:
-            person_three = sorted_age_persons.pop()
-            sector_two.append(person_three)
-
-        from_age = sector_one[0].age[0]
-        to_age = sector_two[-1].age[1]
-
-        for p in sector_one:
-            p.age = (from_age,to_age)
-            anonymized_persons.append(p)
-        for p in sector_two:
-            p.age = (from_age, to_age)
-            anonymized_persons.append(p)
-
-    return anonymized_persons
 
 
 def get_combinations_with_least_steps(satisfying_combinations):
-    sorted_combinations = sorted(satisfying_combinations, key=lambda combination: combination.get_steps, reverse=False)
-    least_steps = sorted_combinations[0].get_steps()
-    return [combination for combination in sorted_combinations if combination.get_steps() == least_steps]
+    sorted_combinations = sorted(satisfying_combinations, key=lambda combination: combination.get_anonymization_score, reverse=False)
+    least_steps = sorted_combinations[0].get_anonymization_score()
+    return [combination for combination in sorted_combinations if combination.get_anonymization_score() == least_steps]
 
 
 def copy_persons(fresh_persons):
     persons = []
     for p in fresh_persons:
-        persons.append(Person(p.name, p.age[0], p.sex, p.zipcode, p.illness))
+        persons.append(Person(p.name, p.dob, p.sex, p.zipcode, p.illness))
     return persons
 
 
 def group_persons(persons):
     grouped_persons = {}
     for p in persons:
-        pseudo_parameters = str(p.age[0]) + str(p.age[1]) + str(p.zipcode) + str(p.sex)
+        pseudo_parameters = str(p.dob) + str(p.zipcode) + str(p.sex)
         if grouped_persons.get(pseudo_parameters) is None:
             grouped_persons[pseudo_parameters] = []
         grouped_persons[pseudo_parameters].append(p)
     return grouped_persons
+
 
 def get_k(grouped_persons):
     tmpDict = {}
@@ -104,6 +96,7 @@ def get_k(grouped_persons):
             k = tmpDict[group]
     return k
 
+
 def print_results(best_combination):
     print "==============="
     print "Anonymized Data"
@@ -111,23 +104,24 @@ def print_results(best_combination):
     print best_combination
 
 
-def anonymize(persons, iAge, iZip, iSex):
-    for i in range(iAge):
-        persons = anonymize_age_advanced(persons, i)
+def anonymize(persons, iDate, iZip, iSex):
+    for i in range(iDate):
+        persons = anonymize_date(persons)
     for j in range(iZip):
         persons = anonymize_ZIP(persons)
     for l in range(iSex):
         persons = anonymize_sex(persons)
     return persons
 
+
 def export_csv(combination):
     print "Exporting CSV ..."
     try:
-        csv_list = [["Name","Alter","Geschlecht","PLZ","Krankheit","Gruppe"]]
+        csv_list = [["name","date_of_birth","sex","zip","illness"]]
         for index, group in enumerate(combination.grouped_persons):
             for p in combination.grouped_persons[group]:
                 csv_entry = str(p).split(', ')
-                csv_entry.append("Gruppe " + str(index+1))
+                csv_entry.append("Group " + str(index+1))
                 csv_list.append(csv_entry)
         with open("anonymized.csv", 'wb') as myfile:
             wr = csv.writer(myfile, delimiter=",")
@@ -135,6 +129,7 @@ def export_csv(combination):
         print "Successfully exported CSV!"
     except Exception as e:
         print "Error while exporting CSV: " + str(e)
+
 
 def get_best_combination(combinations_with_least_steps):
     best_combination = None
@@ -158,6 +153,7 @@ def get_best_combination(combinations_with_least_steps):
                 best_combination = c
     return best_combination
 
+
 def main():
     try:
         given_k = int(sys.argv[1])
@@ -166,18 +162,18 @@ def main():
         exit()
     satisfying_combinations = []
     fresh_persons = read_csv()
-    for iAge in range(4):
+    for iDate in range(7):
         for iZip in range(6):
             for iSex in range(2):
                 persons = copy_persons(fresh_persons)
-                persons = anonymize(persons, iAge, iZip, iSex)
+                persons = anonymize(persons, iDate, iZip, iSex)
 
                 grouped_persons = group_persons(persons)
 
                 k = get_k(grouped_persons)
 
                 if k >= given_k:
-                    satisfying_combinations.append(Combination(iAge,iZip,iSex,k,grouped_persons))
+                    satisfying_combinations.append(Combination(iDate,iZip,iSex,k,grouped_persons))
 
     if len(satisfying_combinations) > 0:
         combinations_with_least_steps = get_combinations_with_least_steps(satisfying_combinations)
@@ -186,5 +182,7 @@ def main():
         export_csv(best_combination)
     else:
         print "No satisfying combinations found. Try again with a lower k!"
+
+
 if __name__ == "__main__":
     main()
