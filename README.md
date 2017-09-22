@@ -15,6 +15,9 @@ Date format: YYYYMMDD
 * 20171H
 * 2017
 * 201*
+* 20**
+* 2***
+* ****
 
 ### Classes for quasi identifier 'ZIP code'
 

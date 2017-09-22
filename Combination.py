@@ -22,4 +22,4 @@ class Combination():
 
 
     def get_anonymization_score(self):
-        return self.iDate*(1.0/7.0) + self.iZip*(1.0/6.0) + self.iSex*(1.0/2.0)
+        return self.iDate*(1.0/10.0) + self.iZip*(1.0/6.0) + self.iSex*(1.0/2.0)

@@ -37,7 +37,7 @@ def anonymize_date(persons):
                 new_dob = old_dob[:6] + '2H'
         elif 'H' in old_dob and len(old_dob) == 8:
             new_dob = old_dob[:6] + '**'
-        elif '**' in old_dob:
+        elif '**' in old_dob and len(old_dob) == 8:
             month = int(old_dob[4:6])
             if month in range(4):
                 new_dob = old_dob[:4] + 'Q1'
@@ -54,8 +54,14 @@ def anonymize_date(persons):
                 new_dob = old_dob[:4] + '2H'
         elif 'H' in old_dob and len(old_dob) == 6:
             new_dob = old_dob[:4]
-        elif '*' not in old_dob and len(old_dob) == 4:
+        elif old_dob.count('*') == 0 and len(old_dob) == 4:
             new_dob = old_dob[:3] + '*'
+        elif old_dob.count('*') == 1 and len(old_dob) == 4:
+            new_dob = old_dob[:2] + '**'
+        elif old_dob.count('*') == 2 and len(old_dob) == 4:
+            new_dob = old_dob[:1] + '***'
+        elif old_dob.count('*') == 3 and len(old_dob) == 4:
+            new_dob = '****'
         else:
             new_dob = old_dob
 
@@ -162,7 +168,7 @@ def main():
         exit()
     satisfying_combinations = []
     fresh_persons = read_csv()
-    for iDate in range(7):
+    for iDate in range(10):
         for iZip in range(6):
             for iSex in range(2):
                 persons = copy_persons(fresh_persons)
