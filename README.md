@@ -167,7 +167,7 @@ um zumindest k = 2 zu erreichen.
 
 
 | Äquivalenzklasse  | Gebustsdatum     | ZIP   | Geschlecht | Krankheit |
-|: ----------------:| :---------------:| :----:| :---------:| :--------:|
+| :----------------:| :---------------:| :----:| :---------:| :--------:|
 | 1                 | 2*******         | ***** | male       | Cancer    |
 | 2                 | 1*******         | ***** | female     | Strain    |
 | 2                 | 1*******         | ***** | female     | Dementia  |
@@ -185,7 +185,7 @@ um zumindest k = 2 zu erreichen.
 | 10                       | 6                       | 0                       |
 
 | Äquivalenzklasse | Gebustsdatum  | ZIP   | Geschlecht | Krankheit |
-| : --------------:| :-----------: |:-----:| :---------:| :--------:|
+| :---------------:| :-----------: |:-----:| :---------:| :--------:|
 | 1                | ********      | ***** | male       | Cancer    |
 | 1                | ********      | ***** | male       | Cancer    |
 | 1                | ********      | ***** | male       | Cancer    |
