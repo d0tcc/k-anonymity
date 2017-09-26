@@ -2,19 +2,18 @@
 
 ## Algorithmus
 
-Dem Programm wird ein Parameter übergeben - k
-
+Dem Programm wird ein Parameter übergeben - k. 
 Anschließend wird der Datensatz aus der cvs Datei (data.cvs) eingelesen.
 
+
 Dieses Programm ist darauf ausgelegt, drei Quasi Identifikatoren zu behandeln. 
-+Geburtsdatum
-+Postleitzahl
-+Geschlecht
++ Geburtsdatum
++ Postleitzahl
++ Geschlecht
 
 Schritt für Schritt werden die jeweiligen Attribute anonymisiert. Dies geschieht 
-global, d.h. ein Anonymisierungsschritt wird auf alle Datensätze angewandt.
-
-Dabei werden alle möglichen Kombinationen durchgetestet. 
+global, d.h. ein Anonymisierungsschritt wird auf alle Datensätze und Äquivalenzklassen
+ angewendet. Dabei werden alle möglichen Kombinationen durchgetestet. 
 
 | # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
 | :----------------------: |:-----------------------:| :----------------------:|
@@ -31,17 +30,16 @@ Dabei werden alle möglichen Kombinationen durchgetestet.
 | 6                        | 5                       | 1                       |
 
 
-Bei jeder Iteration wird
-der komplette Datensatz in die jeweiligen Äquivalenzklassen gruppiert und das 
+Bei jeder Iteration wird der komplette Datensatz in die jeweiligen Äquivalenzklassen gruppiert und das 
 'k' ermittelt. Wird das vorgegebene 'k' erreicht, wird die Anzahl der jeweiligen
 Anonymisierungsschritte und der Datensatz gespeichert. 
  
-Am Ende werden alle Kombinationen die das 'k' erfüllen verglichen. Dies passiert 
-durch einen 'Score'. Dabei werden die Anzahl der Schritte zur anonymisierung 
+Am Ende werden alle Kombinationen die das 'k' erfüllen mithilfe eines 'Scores' verglichen. 
+Dabei wird die Anzahl der Schritte zur Anonymisierung 
 durch die maximale Anzahl an Anonymisierungsschritten dividiert.
 Die maximale Anzahl an Schritten wird weiter unten angegeben.
 
-Rersultat des Programmes ist, wieviele Anonymisierungsschritte pro Quasi Identifikator
+Resultat des Programmes ist, wieviele Anonymisierungsschritte pro Quasi Identifikator
 notwendig sind, um das 'k' zu erreichen und so wenig Information wie möglich zu verlieren.
 
  
@@ -60,7 +58,7 @@ Date format: YYYYMMDD
 + 201*
 + 20**
 + 2***
-+ '**** 
++ <nowiki>****</nowiki>
 
 ### ZIP Code 
 
@@ -71,7 +69,7 @@ Annahme: 5 stellige Zahl
 + 123**
 + 12***
 + 1****
-+ '*****
++ <nowiki>*****</nowiki>
 
 ### Geschlecht
 
@@ -143,7 +141,7 @@ Der Datensatz muss aus folgenden Attributen bestehen:
 
 ## Grenzen
 
-Gibt es einen extremen Ausreißer, kommt dieser herangehensweise an ihre Grenzen.
+Gibt es einen extremen Ausreißer, kommt diese herangehensweise an ihre Grenzen.
 
 Angenommen folgender Datensatz ist gegeben:
 
@@ -160,6 +158,41 @@ Angenommen folgender Datensatz ist gegeben:
 
 Hier muss das Geburtsdatum und die Postleitzahl komplett anonymisiert werden,
 um zumindest k = 2 zu erreichen.
+
+### Schritt 15
+
+| # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
+| :----------------------: |:-----------------------:| :----------------------:|
+| 9                        | 6                       | 0                       |
+
+| Äquivalenzklasse | Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
+|: ---------------:| :---------------: |:-----:| :---------:| :--------:|
+|         1         | 2*******         | ***** | male       | Cancer    |
+|         2         | 1*******         | ***** | female     | Strain    |
+|         3         | 1*******         | ***** | male       | Cancer    |
+|         2         | 1*******         | ***** | female     | Dementia  |
+|         3         | 1*******         | ***** | male       | Cancer    |
+|         2         | 1*******         | ***** | female     | Strain    |
+|         3         | 1*******         | ***** | male       | Cancer    |
+|         2         | 1*******         | ***** | female     | Dementia  |
+
+### Schritt 16
+
+| # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
+| :----------------------: |:-----------------------:| :----------------------:|
+| 10                        | 6                       | 0                       |
+
+| Äquivalenzklasse | Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
+|: ---------------:| :---------------: |:-----:| :---------:| :--------:|
+|         1         | ********         | ***** | male       | Cancer    |
+|         2         | ********         | ***** | female     | Strain    |
+|         1         | ********         | ***** | male       | Cancer    |
+|         2         | ********         | ***** | female     | Dementia  |
+|         1         | ********         | ***** | male       | Cancer    |
+|         2         | ********         | ***** | female     | Strain    |
+|         1         | ********         | ***** | male       | Cancer    |
+|         2         | ********         | ***** | female     | Dementia  |
+
 Das Problem ist, dass die Anonymisierungsschritte global durchgeführt werden und
  fix vorgegeben sind.
 
