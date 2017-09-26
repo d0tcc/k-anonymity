@@ -1,6 +1,6 @@
 # k-anonymity
 
-TODO: k-anonymity explanation
+## Algorithmus
 
 Dem Programm wird ein Parameter übergeben - k
 
@@ -45,7 +45,7 @@ Rersultat des Programmes ist, wieviele Anonymisierungsschritte pro Quasi Identif
 notwendig sind, um das 'k' zu erreichen und so wenig Information wie möglich zu verlieren.
 
  
-# Quasi Identifikatoren - Anonymisierungsklassen
+## Quasi Identifikatoren - Anonymisierungsklassen
 
 #### Geburtsdatum
 
@@ -89,7 +89,7 @@ Datensatz:
 | 19780809          | 72062 | male       | Cancer    |
 | 19980329          | 63409 | female     | Dementia  |
 
-###Schritt 1:
+### Schritt 1:
 
 | # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
 | :----------------------: |:-----------------------:| :----------------------:|
@@ -123,15 +123,16 @@ Datensatz:
 | :----------------------: |:-----------------------:| :----------------------:|
 | 4                        | 3                       | 0                       |
 
-| Äquivalenzklasse | Gebustsdatum    | ZIP   | Geschlecht | Krankheit |
+| Äquivalenzklasse | Geburtsdatum    | ZIP   | Geschlecht | Krankheit |
 |:---------------: | :-------------: |:-----:| :---------:| :--------:|
 | 1                | 1978H2          | 72*** | male       | Cancer    |
 | 2                | 1998H1          | 63*** | female     | Strain    |
 | 1                | 1978H2          | 72*** | male       | Cancer    |
 | 2                | 1998H1          | 63*** | female     | Dementia  |
 
+Insgesamt 7 Anonymisierungsschritte. Score: 4/10 + 3/6 + 0/2 = 0.4 + 0.5 = 0.9
 
-# Datensatz
+## Datensatz
 
 Der Datensatz muss aus folgenden Attributen bestehen:
 + Name
@@ -140,6 +141,25 @@ Der Datensatz muss aus folgenden Attributen bestehen:
 + ZIP: 5 Ziffern
 + Krankheit
 
-# Grenzen
+## Grenzen
 
+Gibt es einen extremen Ausreißer, kommt dieser herangehensweise an ihre Grenzen.
+
+Angenommen folgender Datensatz ist gegeben:
+
+| Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
+| :---------------: |:-----:| :---------:| :--------:|
+| 20010808          | 92021 | male       | Cancer    |
+| 19980102          | 63331 | female     | Strain    |
+| 19780809          | 72062 | male       | Cancer    |
+| 19980329          | 63409 | female     | Dementia  |
+| 19970423          | 22321 | male       | Cancer    |
+| 19980322          | 53531 | female     | Strain    |
+| 19540512          | 32462 | male       | Cancer    |
+| 19880321          | 63634 | female     | Dementia  |
+
+Hier muss das Geburtsdatum und die Postleitzahl komplett anonymisiert werden,
+um zumindest k = 2 zu erreichen.
+Das Problem ist, dass die Anonymisierungsschritte global durchgeführt werden und
+ fix vorgegeben sind.
 
