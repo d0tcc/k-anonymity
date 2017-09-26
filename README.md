@@ -111,8 +111,8 @@ Datensatz:
 | Äquivalenzklasse | Gebustsdatum    | ZIP   | Geschlecht | Krankheit |
 |:---------------: | :-------------: |:-----:| :---------:| :--------:|
 | 1                | 1978H2          | 720** | male       | Cancer    |
-| 2                | 1998H1          | 633** | female     | Strain    |
 | 1                | 1978H2          | 720** | male       | Cancer    |
+| 2                | 1998H1          | 633** | female     | Strain    |
 | 3                | 1998H1          | 634** | female     | Dementia  |
 
 ### Schritt 7
@@ -124,8 +124,8 @@ Datensatz:
 | Äquivalenzklasse | Geburtsdatum    | ZIP   | Geschlecht | Krankheit |
 |:---------------: | :-------------: |:-----:| :---------:| :--------:|
 | 1                | 1978H2          | 72*** | male       | Cancer    |
-| 2                | 1998H1          | 63*** | female     | Strain    |
 | 1                | 1978H2          | 72*** | male       | Cancer    |
+| 2                | 1998H1          | 63*** | female     | Strain    |
 | 2                | 1998H1          | 63*** | female     | Dementia  |
 
 Insgesamt 7 Anonymisierungsschritte. Score: 4/10 + 3/6 + 0/2 = 0.4 + 0.5 = 0.9
@@ -165,33 +165,34 @@ um zumindest k = 2 zu erreichen.
 | :----------------------: |:-----------------------:| :----------------------:|
 | 9                        | 6                       | 0                       |
 
-| Äquivalenzklasse | Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
-|: ---------------:| :---------------: |:-----:| :---------:| :--------:|
-|         1         | 2*******         | ***** | male       | Cancer    |
-|         2         | 1*******         | ***** | female     | Strain    |
-|         3         | 1*******         | ***** | male       | Cancer    |
-|         2         | 1*******         | ***** | female     | Dementia  |
-|         3         | 1*******         | ***** | male       | Cancer    |
-|         2         | 1*******         | ***** | female     | Strain    |
-|         3         | 1*******         | ***** | male       | Cancer    |
-|         2         | 1*******         | ***** | female     | Dementia  |
+| Äquivalenzklasse  | Gebustsdatum     | ZIP   | Geschlecht | Krankheit |
+|: ----------------:| :---------------:| :-----:| :---------:| :--------:|
+| 1                 | 2*******         | ***** | male       | Cancer    |
+| 2                 | 1*******         | ***** | female     | Strain    |
+| 2                 | 1*******         | ***** | female     | Dementia  |
+| 2                 | 1*******         | ***** | female     | Strain    |
+| 2                 | 1*******         | ***** | female     | Dementia  |
+| 3                 | 1*******         | ***** | male       | Cancer    |
+| 3                 | 1*******         | ***** | male       | Cancer    |
+| 3                 | 1*******         | ***** | male       | Cancer    |
+
 
 ### Schritt 16
 
 | # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
 | :----------------------: |:-----------------------:| :----------------------:|
-| 10                        | 6                       | 0                       |
+| 10                       | 6                       | 0                       |
 
-| Äquivalenzklasse | Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
-|: ---------------:| :---------------: |:-----:| :---------:| :--------:|
-|         1         | ********         | ***** | male       | Cancer    |
-|         2         | ********         | ***** | female     | Strain    |
-|         1         | ********         | ***** | male       | Cancer    |
-|         2         | ********         | ***** | female     | Dementia  |
-|         1         | ********         | ***** | male       | Cancer    |
-|         2         | ********         | ***** | female     | Strain    |
-|         1         | ********         | ***** | male       | Cancer    |
-|         2         | ********         | ***** | female     | Dementia  |
+| Äquivalenzklasse | Gebustsdatum  | ZIP   | Geschlecht | Krankheit |
+| : --------------:| :-----------: |:-----:| :---------:| :--------:|
+| 1                | ********      | ***** | male       | Cancer    |
+| 1                | ********      | ***** | male       | Cancer    |
+| 1                | ********      | ***** | male       | Cancer    |
+| 1                | ********      | ***** | male       | Cancer    |
+| 2                | ********      | ***** | female     | Strain    |
+| 2                | ********      | ***** | female     | Dementia  |
+| 2                | ********      | ***** | female     | Strain    |
+| 2                | ********      | ***** | female     | Dementia  |
 
 Das Problem ist, dass die Anonymisierungsschritte global durchgeführt werden und
  fix vorgegeben sind.
