@@ -1,4 +1,5 @@
-# k-anonymity
+# k-anonymity Übung (Privacy and Big Data, MIS, WS2017/18)
+Julian Schrittwieser, Martin Tschemernjak, Fabian Hirnschal, Simon Hasler
 
 ## Algorithmus
 
@@ -77,7 +78,7 @@ Annahme: 5 stellige Zahl
 + female/male
 + <nowiki>*</nowiki>
 
-## Example
+## Beispiel
 
 Datensatz:
 
