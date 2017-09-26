@@ -2,44 +2,20 @@
 
 TODO: k-anonymity explanation
 
-# Quasi identifiers
+Dem Programm wird ein Parameter übergeben - k
 
-### Classes for quasi identifier 'Date of Birth':
+Anschließend wird der Datensatz aus der cvs Datei (data.cvs) eingelesen.
 
-Date format: YYYYMMDD
+Dieses Programm ist darauf ausgelegt, drei Quasi Identifikatoren zu behandeln. 
++Geburtsdatum
++Postleitzahl
++Geschlecht
 
-+ 20170110
-* 201701H1
-* 201701**
-* 2017Q1
-* 20171H
-* 2017
-* 201*
-* 20**
-* 2***
-* ****
+Schritt für Schritt werden die jeweiligen Attribute anonymisiert. Dies geschieht 
+global, d.h. ein Anonymisierungsschritt wird auf alle Datensätze angewandt.
 
-### Classes for quasi identifier 'ZIP code'
+Dabei werden alle möglichen Kombinationen durchgetestet. 
 
-always 5 digits
-
-* 12345
-* 1234*
-* 123**
-* 12***
-* 1****
-* *****
-
-### Classes for quasi identifier 'sex'
-
-only two possibilities
-
-* female
-* <nowiki>*</nowiki>
-
-# Algorithm
-
-In our approach we try all the possible combinations of anonymization steps for the three quasi identifiers (date of birth, zip, sex).
 
 | # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
 | :----------------------: |:-----------------------:| :----------------------:|
@@ -54,6 +30,54 @@ In our approach we try all the possible combinations of anonymization steps for 
 | ...                      | ...                     | ...                     |
 | 6                        | 5                       | 0                       |
 | 6                        | 5                       | 1                       |
+
+
+Bei jeder Iteration wird
+der komplette Datensatz in die jeweiligen Äquivalenzklassen gruppiert und das 
+'k' ermittelt. Wird das vorgegebene 'k' erreicht, wird die Anzahl der jeweiligen
+Anonymisierungsschritte und der Datensatz gespeichert. 
+ 
+Am Ende werden alle Kombinationen die das 'k' erfüllen verglichen. Dies passiert 
+durch einen 'Score'. Dabei werden die Anzahl der Schritte zur anonymisierung 
+durch die maximale Anzahl an Anonymisierungsschritten dividiert.
+Die maximale Anzahl an Schritten wird weiter unten angegeben.
+
+Rersultat des Programmes ist, wieviele Anonymisierungsschritte pro Quasi Identifikator
+notwendig sind, um das 'k' zu erreichen und so wenig Information wie möglich zu verlieren.
+
+ 
+# Quasi Identifikatoren - Anonymisierungsklassen
+
+#### Geburtsdatum
+
+Date format: YYYYMMDD
+
++ 20170110
++ 201701H1
++ 201701**
++ 2017Q1
++ 20171H
++ 2017
++ 201*
++ 20**
++ 2***
++ '**** 
+
+### ZIP Code 
+
+Annahme: 5 stellige Zahl
+
++ 12345
++ 1234*
++ 123**
++ 12***
++ 1****
++ '*****
+
+### Geschlecht
+
++ female/male
++ <nowiki>*</nowiki>
 
 ## Example
 
