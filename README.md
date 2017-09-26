@@ -42,6 +42,7 @@ Die maximale Anzahl an Schritten wird weiter unten angegeben.
 Resultat des Programmes ist, wieviele Anonymisierungsschritte pro Quasi Identifikator
 notwendig sind, um das 'k' zu erreichen und so wenig Information wie möglich zu verlieren.
 
+Am Ende wird das optimale Ergebnis ausgegeben und als csv exportiert.
  
 ## Quasi Identifikatoren - Anonymisierungsklassen
 
