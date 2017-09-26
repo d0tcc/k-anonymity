@@ -16,7 +16,6 @@ global, d.h. ein Anonymisierungsschritt wird auf alle Datensätze angewandt.
 
 Dabei werden alle möglichen Kombinationen durchgetestet. 
 
-
 | # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
 | :----------------------: |:-----------------------:| :----------------------:|
 | 0                        | 0                       | 0                       |
@@ -81,12 +80,66 @@ Annahme: 5 stellige Zahl
 
 ## Example
 
-TODO: example
+Datensatz:
 
-# Dataset
+| Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
+| :---------------: |:-----:| :---------:| :--------:|
+| 19780808          | 72021 | male       | Cancer    |
+| 19980102          | 63331 | female     | Strain    |
+| 19780809          | 72062 | male       | Cancer    |
+| 19980329          | 63409 | female     | Dementia  |
 
-TODO: explain dataset
+###Schritt 1:
 
-# Weaknesses
+| # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
+| :----------------------: |:-----------------------:| :----------------------:|
+| 1                        | 0                       | 0                       |
 
-TODO: describe weaknesses
+| Äquivalenzklasse | Gebustsdatum      | ZIP   | Geschlecht | Krankheit |
+| :---------------:| :---------------: |:-----:| :---------:| :--------:|
+| 1                | 197808H1          | 72021 | male       | Cancer    |
+| 2                | 199801H1          | 63331 | female     | Strain    |
+| 3                | 197808H1          | 72062 | male       | Cancer    |
+| 4                | 199803H2          | 63409 | female     | Dementia  |
+
+...
+
+### Schritt 6
+
+| # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
+| :----------------------: |:-----------------------:| :----------------------:|
+| 4                        | 2                       | 0                       |
+
+| Äquivalenzklasse | Gebustsdatum    | ZIP   | Geschlecht | Krankheit |
+|:---------------: | :-------------: |:-----:| :---------:| :--------:|
+| 1                | 1978H2          | 720** | male       | Cancer    |
+| 2                | 1998H1          | 633** | female     | Strain    |
+| 1                | 1978H2          | 720** | male       | Cancer    |
+| 3                | 1998H1          | 634** | female     | Dementia  |
+
+### Schritt 7
+
+| # of date anonymizations | # of zip anonymizations | # of sex anonymizations |
+| :----------------------: |:-----------------------:| :----------------------:|
+| 4                        | 3                       | 0                       |
+
+| Äquivalenzklasse | Gebustsdatum    | ZIP   | Geschlecht | Krankheit |
+|:---------------: | :-------------: |:-----:| :---------:| :--------:|
+| 1                | 1978H2          | 72*** | male       | Cancer    |
+| 2                | 1998H1          | 63*** | female     | Strain    |
+| 1                | 1978H2          | 72*** | male       | Cancer    |
+| 2                | 1998H1          | 63*** | female     | Dementia  |
+
+
+# Datensatz
+
+Der Datensatz muss aus folgenden Attributen bestehen:
++ Name
++ Geburtsdatum: YYYYMMDD
++ Geschlecht: male/female
++ ZIP: 5 Ziffern
++ Krankheit
+
+# Grenzen
+
+
